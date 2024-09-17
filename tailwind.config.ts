@@ -8,9 +8,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        "3xl": "1920px",
+      },
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        text: { gray: "#021526B2", black: "#021526" },
+        background: { darkGray: "#02152680" },
       },
     },
   },
