@@ -12,7 +12,6 @@ import Image from "next/image";
 const AddAgent: React.FC<AddAgentProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
-  // Initialize profile as an object
   const [userProfile, setUserProfile] = useState({
     firstName: "",
     lastName: "",
@@ -21,7 +20,6 @@ const AddAgent: React.FC<AddAgentProps> = ({ isOpen, onClose }) => {
     number: "",
   });
 
-  // Form setup
   const {
     register,
     handleSubmit,
@@ -32,8 +30,9 @@ const AddAgent: React.FC<AddAgentProps> = ({ isOpen, onClose }) => {
     resolver: yupResolver(agentSchema),
   });
 
-  // Image upload handling
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  if (!isOpen) return null;
   const handleButtonClick = () => {
     fileInputRef.current?.click();
   };
@@ -87,7 +86,6 @@ const AddAgent: React.FC<AddAgentProps> = ({ isOpen, onClose }) => {
     }));
   };
 
-  // onSubmit function
   const onSubmit = (data: any) => {
     console.log("Form submitted:", data);
     onClose();
