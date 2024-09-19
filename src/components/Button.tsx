@@ -1,5 +1,4 @@
 import { ButtonProps } from "@/types/button";
-import Image from "next/image";
 import Link from "next/link";
 import { ReactNode } from "react";
 
@@ -14,20 +13,11 @@ const Button = ({ type, title, icon, variant, link, action }: ButtonProps) => {
   return (
     <Link href={link || "#"} prefetch={false}>
       <button
-        className={`transition-all ${variant}`}
+        className={`transition-all flex justify-center items-center ${variant}`}
         type={type}
         onClick={action}
       >
-        {icon && (
-          <div className="mr-3">
-            <Image
-              src={icon}
-              alt={renderTitle(title) || "icon"}
-              width={20}
-              height={20}
-            />
-          </div>
-        )}
+        {icon && <div className="mr-2 text-[22px]">{icon}</div>}
         {title}
       </button>
     </Link>

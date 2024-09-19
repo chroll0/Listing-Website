@@ -12,8 +12,14 @@ const config: Config = {
         "3xl": "1920px",
       },
       colors: {
-        text: { gray: "#021526B2", black: "#021526" },
-        background: { darkGray: "#02152680" },
+        text: {
+          gray: "#021526B2",
+          black: "#021526",
+          slate: "#808A93",
+          darkGray: "#021526CC",
+        },
+        background: { darkGray: "#02152680", gray: "#02152657" },
+        button: { gray: "#676E76", tomato: "#F93B1D" },
       },
     },
   },

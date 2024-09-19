@@ -4,7 +4,7 @@ import React from "react";
 
 const ListingCard = ({ data }: ListingCardProps) => {
   return (
-    <div className="relative rounded-[15px] w-[384px] border">
+    <div className="relative rounded-[15px] max-w-[384px] customBorder">
       <Image src={data.imgURL} alt={data.imgURL} width={384} height={307} />
       <div className="flex flex-col px-[22px] py-[25px] gap-[9px]">
         <span className="text-[28px] font-bold text-black leading-[33.6px]">

@@ -23,3 +23,7 @@ export type Listing = {
 export interface ListingCardProps {
   data: Listing;
 }
+export interface AddAgentProps {
+  isOpen: boolean;
+  onClose: () => void;
+}

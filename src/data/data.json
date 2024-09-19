@@ -18,5 +18,25 @@
       "mail": "sophio.gelovani@redberry.ge",
       "number": 577777777
     }
+  },
+  {
+    "id": "2",
+    "imgURL": "/bina2.png",
+    "price": 80000,
+    "region": "თბილისი",
+    "address": " ი. ჭავჭავაძის 53",
+    "area": 55,
+    "bed": 2,
+    "postIndex": 2525,
+    "type": "იყიდება",
+    "description": "იყიდება ბინა ჭავჭავაძის ქუჩაზე, ვაკეში. ბინა არის ახალი რემონტით, ორი საძინებლითა და დიდი აივნებით. მოწყობილია ავეჯითა და ტექნიკით. ",
+    "date": "08/08/24",
+    "agent": {
+      "firstName": "სოფიო",
+      "lastName": "გელოვანი",
+      "imgURL": "/profile.png",
+      "mail": "sophio.gelovani@redberry.ge",
+      "number": 577777777
+    }
   }
 ]
