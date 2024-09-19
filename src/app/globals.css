@@ -6,6 +6,12 @@
   --background: #ffffff;
   --foreground: #171717;
 }
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  box-shadow: none;
+}
 
 @media (prefers-color-scheme: dark) {
   :root {

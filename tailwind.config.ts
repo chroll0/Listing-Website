@@ -19,7 +19,7 @@ const config: Config = {
           darkGray: "#021526CC",
         },
         background: { darkGray: "#02152680", gray: "#02152657" },
-        button: { gray: "#676E76", tomato: "#F93B1D" },
+        button: { gray: "#676E76", tomato: "#F93B1D", green: "#45A849" },
       },
     },
   },

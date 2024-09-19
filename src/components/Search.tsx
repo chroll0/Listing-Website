@@ -52,7 +52,7 @@ const Search = () => {
           გასუფთავება
         </button>
       </div>
-      {/* AddAgent modal */}
+      {/* Agent modal */}
       <AddAgent isOpen={isModalOpen} onClose={toggleModal} />
     </div>
   );
