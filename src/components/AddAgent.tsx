@@ -1,3 +1,5 @@
+"use client";
+
 import Button from "./Button";
 import { agentSchema } from "./validations";
 import { useForm } from "react-hook-form";
