@@ -1,15 +1,7 @@
 import { ButtonProps } from "@/types/button";
 import Link from "next/link";
-import { ReactNode } from "react";
 
 const Button = ({ type, title, icon, variant, link, action }: ButtonProps) => {
-  const renderTitle = (title: string | ReactNode) => {
-    if (typeof title === "string") {
-      return title;
-    }
-    return null;
-  };
-
   return (
     <Link href={link || "#"} prefetch={false}>
       <button
