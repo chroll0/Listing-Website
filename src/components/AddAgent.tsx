@@ -334,7 +334,7 @@ const AddAgent: React.FC<AddAgentProps> = ({ isOpen, onClose }) => {
           <Button
             type="button"
             title="გაუქმება"
-            variant="text-[16px] font-medium leading-[19.2px] rounded-[10px] py-[14px] px-[18px] text-button-tomato bg-text-white border border-button-tomato"
+            variant="text-[16px] font-medium leading-[19.2px] rounded-[10px] py-[13px] px-[18px] text-button-tomato bg-text-white border border-button-tomato"
             action={onClose}
           />
           <Button

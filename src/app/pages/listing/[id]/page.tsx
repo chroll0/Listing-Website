@@ -1,12 +1,22 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import data from "@/data/data.json";
 import AgentInfo from "@/components/AgentInfo";
 import Button from "@/components/Button";
+import DeleteListing from "@/components/DeleteListing";
+import { useState } from "react";
 
-const Listing = async ({ params }: { params: { id: string } }) => {
+const Listing = ({ params }: { params: { id: string } }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const { id } = params;
   const item = data.find((d) => d.id === id) || null;
+
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
+  };
 
   return (
     <div className="relative paddingX paddingY">
@@ -44,7 +54,7 @@ const Listing = async ({ params }: { params: { id: string } }) => {
                   />
                 </div>
                 <span className="text-[24px]">
-                  {item.region},{item.address}
+                  {item.region}, {item.address}
                 </span>
               </div>
               <div className="flex gap-1.5 items-center">
@@ -93,14 +103,14 @@ const Listing = async ({ params }: { params: { id: string } }) => {
               type="button"
               title="ლისტინგის წაშლა"
               variant="text-[12px] font-medium leading-[14.4px] text-button-gray border rounded-[8px] p-[10px]"
-              link=""
-              // action={}
+              action={toggleModal}
             />
           </div>
         </div>
       ) : (
         <p>No data available</p>
       )}
+      <DeleteListing isOpen={isOpen} onClose={toggleModal} />
     </div>
   );
 };
