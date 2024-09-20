@@ -60,7 +60,7 @@ const AddAgent: React.FC<AddAgentProps> = ({ isOpen, onClose }) => {
   };
 
   const handleChange: handleChangeProps = (field, value) => {
-    let formattedValue = value.toString();
+    const formattedValue = value.toString();
 
     setUserProfile((prevProfile) => ({
       ...prevProfile,

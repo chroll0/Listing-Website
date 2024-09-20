@@ -41,7 +41,7 @@ const AddListing = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleChange: listingProps = (field, value) => {
-    let formattedValue = value.toString();
+    const formattedValue = value.toString();
 
     setListInfo((prevProfile) => ({
       ...prevProfile,

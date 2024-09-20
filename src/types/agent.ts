@@ -7,3 +7,10 @@ export interface AddAgentProps {
   isOpen: boolean;
   onClose: () => void;
 }
+export interface AgentFormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  number: string;
+  image?: FileList;
+}
