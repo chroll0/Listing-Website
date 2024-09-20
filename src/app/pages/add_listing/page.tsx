@@ -9,6 +9,8 @@ import { useRef, useState } from "react";
 import { listingProps } from "@/types/listing";
 import { IoIosCheckmark } from "react-icons/io";
 import Image from "next/image";
+import RegionsOption from "@/components/fetched_data/RegionsOption";
+import CitiesOption from "@/components/fetched_data/CitiesOption";
 
 const AddListing = () => {
   const [listInfo, setListInfo] = useState({
@@ -203,9 +205,8 @@ const AddListing = () => {
                     : ""
                 }`}
               >
-                <option value="">არჩევა</option>
-                <option value="აგენტი 1">აგენტი 1</option>
-                <option value="აგენტი 2">აგენტი 2</option>
+                <option value="" className="bg-slate-100"></option>
+                <RegionsOption />
               </select>
               {errors.region ? (
                 <div className="flex justify-start items-center text-button-tomato">
@@ -234,9 +235,8 @@ const AddListing = () => {
                     : ""
                 }`}
               >
-                <option value="">არჩევა</option>
-                <option value="აგენტი 1">აგენტი 1</option>
-                <option value="აგენტი 2">აგენტი 2</option>
+                <option className="bg-slate-100" value=""></option>
+                <CitiesOption />
               </select>
               {errors.city ? (
                 <div className="flex justify-start items-center text-button-tomato">
