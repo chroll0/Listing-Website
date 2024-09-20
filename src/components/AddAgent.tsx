@@ -23,6 +23,7 @@ const AddAgent: React.FC<AddAgentProps> = ({ isOpen, onClose }) => {
     handleSubmit,
     setValue,
     watch,
+    trigger,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(agentSchema),
@@ -48,6 +49,9 @@ const AddAgent: React.FC<AddAgentProps> = ({ isOpen, onClose }) => {
         }));
       };
       reader.readAsDataURL(file);
+
+      setValue("image", file);
+      trigger("image");
     }
   };
 
@@ -85,8 +89,8 @@ const AddAgent: React.FC<AddAgentProps> = ({ isOpen, onClose }) => {
     }));
   };
 
-  const onSubmit = () => {
-    // console.log("Form submitted:", data);
+  const onSubmit = (data: any) => {
+    console.log("Form submitted:", data);
     onClose();
   };
 
@@ -286,8 +290,7 @@ const AddAgent: React.FC<AddAgentProps> = ({ isOpen, onClose }) => {
                 onChange={handleFileChange}
                 className="hidden"
               />
-              <button
-                type="button"
+              <div
                 onClick={handleButtonClick}
                 className="flex justify-center items-center w-full p-2 rounded text-[16px] h-[120px] border border-dashed border-[#2D3648]"
               >
@@ -325,7 +328,20 @@ const AddAgent: React.FC<AddAgentProps> = ({ isOpen, onClose }) => {
                     </button>
                   </div>
                 )}
-              </button>
+              </div>
+              {errors.image ? (
+                <span className="text-[14px] text-button-tomato">
+                  {errors.image.message}
+                </span>
+              ) : watch("image") ? (
+                <span className="text-[14px] text-button-green">
+                  სავალდებულოა
+                </span>
+              ) : (
+                <span className="text-[14px] text-text-black">
+                  სავალდებულოა
+                </span>
+              )}
             </div>
           </div>
         </form>

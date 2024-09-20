@@ -20,12 +20,6 @@ select:focus {
   }
 }
 
-body {
-  /* color: var(--foreground); */
-  /* background: var(--background); */
-  font-family: Arial, Helvetica, sans-serif;
-}
-
 .customBorder {
   border-width: 0px 1px 1px 1px;
   border-style: solid;

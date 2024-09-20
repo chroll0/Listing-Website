@@ -53,16 +53,22 @@ const Search = () => {
       </div>
 
       <div className="flex items-center gap-2">
-        <div className="flex items-center border px-[11px] py-[3px] rounded-full font-normal">
-          <span className="mr-1 text-[14px] text-text-darkGray">თბილისი</span>
-          <IoMdClose className="text-[14px]" />
-        </div>
-        <div className="flex items-center border px-[11px] py-[3px] rounded-full font-normal">
-          <span className="mr-1 text-[14px] text-text-darkGray">
-            20 000₾ - 100 000₾
-          </span>
-          <IoMdClose className="text-[14px]" />
-        </div>
+        <button
+          type="button"
+          className="flex items-center border px-[11px] py-[3px] rounded-full font-normal cursor-pointer text-[14px] text-text-darkGray"
+        >
+          თბილისი
+          <IoMdClose />
+        </button>
+
+        <button
+          type="button"
+          className="flex items-center border px-[11px] py-[3px] rounded-full font-normal cursor-pointer text-[14px] text-text-darkGray"
+        >
+          20 000₾ - 100 000₾
+          <IoMdClose />
+        </button>
+
         <button
           type="button"
           className="text-[14px] font-semibold leading-[16.8px] text-text-darkGray px-[5px] py-[3px]"
@@ -70,7 +76,7 @@ const Search = () => {
           გასუფთავება
         </button>
       </div>
-      {/* Agent modal */}
+
       <AddAgent isOpen={isModalOpen} onClose={toggleModal} />
     </div>
   );

@@ -23,3 +23,18 @@ export type Listing = {
 export interface ListingCardProps {
   data: Listing;
 }
+export type listingProps = (
+  field:
+    | "listingType"
+    | "address"
+    | "postIndex"
+    | "region"
+    | "city"
+    | "price"
+    | "area"
+    | "bed"
+    | "description"
+    | "image"
+    | "agent",
+  value: string
+) => void;
