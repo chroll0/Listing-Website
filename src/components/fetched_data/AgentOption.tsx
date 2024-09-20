@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-interface Region {
+interface Agent {
   id: number;
   name: string;
 }
-const RegionsOption = () => {
-  const [regionsData, setRegionsData] = useState<Region[]>([]);
+
+const AgentOption: React.FC = () => {
+  const [agentData, setAgentData] = useState<Agent[]>([]);
   const API_TOKEN = process.env.NEXT_PUBLIC_API_TOKEN;
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}regions`;
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}agent`;
 
   useEffect(() => {
     if (!API_URL || !API_TOKEN) {
@@ -18,12 +19,12 @@ const RegionsOption = () => {
 
     const fetchData = async () => {
       try {
-        const response = await axios.get(API_URL, {
+        const response = await axios.get<Agent[]>(API_URL, {
           headers: {
             Authorization: `Bearer ${API_TOKEN}`,
           },
         });
-        setRegionsData(response.data);
+        setAgentData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -34,13 +35,13 @@ const RegionsOption = () => {
 
   return (
     <>
-      {regionsData.map((region) => (
-        <option key={region.id} value={region.name}>
-          {region.name}
+      {agentData.map((agent) => (
+        <option key={agent.id} value={agent.name}>
+          {agent.name}
         </option>
       ))}
     </>
   );
 };
 
-export default RegionsOption;
+export default AgentOption;

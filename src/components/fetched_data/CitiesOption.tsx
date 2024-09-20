@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const CitiesOption = () => {
-  const [citiesData, setCitiesData] = useState<any[]>([]);
+interface City {
+  id: number;
+  name: string;
+}
+
+const CitiesOption: React.FC = () => {
+  const [citiesData, setCitiesData] = useState<City[]>([]);
   const API_TOKEN = process.env.NEXT_PUBLIC_API_TOKEN;
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}cities`;
 
@@ -14,7 +19,7 @@ const CitiesOption = () => {
 
     const fetchData = async () => {
       try {
-        const response = await axios.get(API_URL, {
+        const response = await axios.get<City[]>(API_URL, {
           headers: {
             Authorization: `Bearer ${API_TOKEN}`,
           },
