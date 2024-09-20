@@ -8,6 +8,7 @@ import { IoIosCheckmark } from "react-icons/io";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AddAgentProps, handleChangeProps } from "@/types/agent";
 import Image from "next/image";
+import axios from "axios";
 
 const AddAgent: React.FC<AddAgentProps> = ({ isOpen, onClose }) => {
   const [userProfile, setUserProfile] = useState({
@@ -17,6 +18,9 @@ const AddAgent: React.FC<AddAgentProps> = ({ isOpen, onClose }) => {
     email: "",
     number: "",
   });
+
+  const API_TOKEN = process.env.NEXT_PUBLIC_API_TOKEN;
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}agents`;
 
   const {
     register,
@@ -58,42 +62,40 @@ const AddAgent: React.FC<AddAgentProps> = ({ isOpen, onClose }) => {
   const handleChange: handleChangeProps = (field, value) => {
     let formattedValue = value.toString();
 
-    if (field === "number") {
-      // Remove non-digit characters
-      formattedValue = formattedValue.replace(/\D/g, "");
-      // Format the phone number as "+995 XXX XX XX XX"
-      if (formattedValue.length > 0) {
-        formattedValue = "+995 " + formattedValue.slice(3);
-      }
-      if (formattedValue.length > 6) {
-        formattedValue =
-          formattedValue.slice(0, 8) + " " + formattedValue.slice(8);
-      }
-      if (formattedValue.length > 9) {
-        formattedValue =
-          formattedValue.slice(0, 11) + " " + formattedValue.slice(11);
-      }
-      if (formattedValue.length > 12) {
-        formattedValue =
-          formattedValue.slice(0, 14) + " " + formattedValue.slice(14);
-      }
-      if (formattedValue.length >= 17) {
-        formattedValue = formattedValue.slice(0, 17);
-      }
-      setValue(field, formattedValue.trim());
-    }
-
     setUserProfile((prevProfile) => ({
       ...prevProfile,
       [field]: formattedValue.trim(),
     }));
   };
 
-  const onSubmit = (data: any) => {
-    console.log("Form submitted:", data);
-    onClose();
-  };
+  const onSubmit = async (data: any) => {
+    const formData = new FormData();
+    formData.append("name", data.firstName);
+    formData.append("surname", data.lastName);
+    formData.append("email", data.email);
+    formData.append("phone", data.number);
 
+    if (data.image) {
+      formData.append("avatar", data.image);
+    } else {
+      console.error("Avatar is missing.");
+      return;
+    }
+
+    try {
+      const response = await axios.post(`${API_URL}`, formData, {
+        headers: {
+          Authorization: `Bearer ${API_TOKEN}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      console.log("Agent added successfully:", response.data);
+      onClose();
+    } catch (error) {
+      console.error("Error adding agent:", error);
+    }
+  };
   return (
     <div className="fixed inset-0 flex justify-center items-center z-50">
       <div

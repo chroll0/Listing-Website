@@ -11,7 +11,7 @@ import { IoIosCheckmark } from "react-icons/io";
 import Image from "next/image";
 import RegionsOption from "@/components/fetched_data/RegionsOption";
 import CitiesOption from "@/components/fetched_data/CitiesOption";
-// import AgentOption from "@/components/fetched_data/AgentOption";
+import AgentOption from "@/components/fetched_data/AgentOption";
 
 const AddListing = () => {
   const [listInfo, setListInfo] = useState({
@@ -481,7 +481,7 @@ const AddListing = () => {
               >
                 <option className="bg-slate-100" value=""></option>
                 {/* <option>+ დაამატე აგენტი</option> */}
-                {/* <AgentOption /> */}
+                <AgentOption />
               </select>
               {errors.agent ? (
                 <div className="flex justify-start items-center text-button-tomato">

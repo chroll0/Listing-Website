@@ -4,12 +4,13 @@ import axios from "axios";
 interface Agent {
   id: number;
   name: string;
+  surname: string;
 }
 
 const AgentOption: React.FC = () => {
   const [agentData, setAgentData] = useState<Agent[]>([]);
   const API_TOKEN = process.env.NEXT_PUBLIC_API_TOKEN;
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}agent`;
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}agents`;
 
   useEffect(() => {
     if (!API_URL || !API_TOKEN) {
@@ -37,7 +38,7 @@ const AgentOption: React.FC = () => {
     <>
       {agentData.map((agent) => (
         <option key={agent.id} value={agent.name}>
-          {agent.name}
+          {agent.name} {agent.surname}
         </option>
       ))}
     </>
