@@ -2,21 +2,22 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import data from "@/data/data.json";
 import AgentInfo from "@/components/AgentInfo";
 import Button from "@/components/Button";
 import DeleteListing from "@/components/DeleteListing";
 import { useState } from "react";
 
-const Listing = ({ params }: { params: { id: string } }) => {
+const Listing = ({ params, data }: { params: { id: string }; data: any[] }) => {
   const [isOpen, setIsOpen] = useState(false);
-
   const { id } = params;
   const item = data.find((d) => d.id === id) || null;
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
+  if (!item) {
+    return <div>Item not found</div>;
+  }
 
   return (
     <div className="relative paddingX paddingY">
