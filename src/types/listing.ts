@@ -38,3 +38,16 @@ export type listingProps = (
     | "agent",
   value: string
 ) => void;
+
+export interface ListingInfo {
+  listingType?: string;
+  address?: string;
+  postIndex?: string;
+  region?: string;
+  city?: string;
+  price?: string;
+  area?: string;
+  description?: string;
+  image?: string;
+  agent?: string;
+}
