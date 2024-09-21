@@ -12,7 +12,7 @@ import Image from "next/image";
 import RegionsOption from "@/components/fetched_data/RegionsOption";
 import CitiesOption from "@/components/fetched_data/CitiesOption";
 import AgentOption from "@/components/fetched_data/AgentOption";
-// import axios from "axios";
+import axios from "axios";
 
 const AddListing = () => {
   const [listInfo, setListInfo] = useState<ListingInfo>({
@@ -72,44 +72,47 @@ const AddListing = () => {
     }
   };
 
-  const onSubmit = async () =>
-    // data: ListingInfo
-    {
-      // const formData = new FormData();
-      // formData.append("address", data.address);
-      // if (data.image) {
-      //   formData.append("image", data.image);
-      // } else {
-      //   console.error("image is missing.");
-      //   return;
-      // }
-      // formData.append("region_id", 1);
-      // formData.append("description", data.description);
-      // formData.append("zip_code", data.postIndex);
-      // formData.append("price", String(data.price));
-      // formData.append("area", String(data.area));
-      // formData.append("is_rental", 0);
-      // formData.append("agent_id", String(data.agent_id));
-      // formData.append("bedrooms", String(data.bedrooms));
-      // formData.append("city_id", String(data.city_id));
-      // try {
-      //   const formData = new FormData();
-      //   Object.entries(data).forEach(([key, value]) => {
-      //     formData.append(key, value);
-      //   });
-      //   const response = await axios.post(`${API_URL}real-estates`, formData, {
-      //     headers: {
-      //       Authorization: `Bearer ${API_TOKEN}`,
-      //       "Content-Type": "multipart/form-data",
-      //     },
-      //   });
-      //   console.log("Listing added successfully:", response.data);
-      //   router.push("/"); // Redirect after submission
-      // } catch (error) {
-      //   console.error("Error adding listing:", error);
-      //   console.error("API Error Response:", error.response?.data);
-      // }
-    };
+  const onSubmit = async (data: ListingInfo) => {
+    const formData = new FormData();
+
+    // Append fields to FormData
+    formData.append("address", data.address);
+
+    // Image handling
+    if (data.image) {
+      formData.append("image", data.image);
+    } else {
+      console.error("image is missing.");
+      return; // Exit if the image is missing
+    }
+
+    formData.append("region_id", String(1));
+    formData.append("description", data.description);
+    formData.append("zip_code", data.postIndex);
+    formData.append("price", String(data.price));
+    formData.append("area", String(data.area));
+    formData.append("is_rental", String(data.is_rental ? 1 : 0));
+    formData.append("agent_id", String(1305));
+    formData.append("bedrooms", String(2));
+    formData.append("city_id", String(1));
+
+    try {
+      const response = await axios.post(`${API_URL}real-estates`, formData, {
+        headers: {
+          Authorization: `Bearer ${API_TOKEN}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      console.log("Listing added successfully:", response.data);
+      router.push("/"); // Redirect after submission
+    } catch (error) {
+      console.error("Error adding listing:", error);
+      if (error.response) {
+        console.error("API Error Response:", error.response.data); // Show detailed API error response
+      }
+    }
+  };
 
   return (
     <div className="flex flex-col items-center paddingX paddingY gap-14">
