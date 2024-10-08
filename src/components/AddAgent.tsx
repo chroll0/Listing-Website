@@ -6,12 +6,12 @@ import { useForm } from "react-hook-form";
 import { useState, useRef } from "react";
 import { IoIosCheckmark } from "react-icons/io";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { AddAgentProps, handleChangeProps } from "@/types/agent";
+import { AddAgentProps, AgentInfo, handleChangeProps } from "@/types/agent";
 import Image from "next/image";
 import axios from "axios";
 
 const AddAgent: React.FC<AddAgentProps> = ({ isOpen, onClose }) => {
-  const [userProfile, setUserProfile] = useState({
+  const [userProfile, setUserProfile] = useState<AgentInfo>({
     firstName: "",
     lastName: "",
     image: "",
@@ -68,15 +68,15 @@ const AddAgent: React.FC<AddAgentProps> = ({ isOpen, onClose }) => {
     }));
   };
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: AgentInfo) => {
     const formData = new FormData();
-    formData.append("name", data.firstName);
-    formData.append("surname", data.lastName);
-    formData.append("email", data.email);
-    formData.append("phone", data.number);
+    formData.append("name", String(data.firstName));
+    formData.append("surname", String(data.lastName));
+    formData.append("email", String(data.email));
+    formData.append("phone", String(data.number));
 
     if (data.image) {
-      formData.append("avatar", data.image);
+      formData.append("avatar", String(data.image));
     } else {
       console.error("Avatar is missing.");
       return;
@@ -306,8 +306,16 @@ const AddAgent: React.FC<AddAgentProps> = ({ isOpen, onClose }) => {
                 ) : (
                   <div className="relative">
                     <Image
-                      src={userProfile.image}
-                      alt={userProfile.image}
+                      src={
+                        typeof userProfile.image === "string"
+                          ? userProfile.image
+                          : "Image"
+                      }
+                      alt={
+                        typeof userProfile.image === "string"
+                          ? userProfile.image
+                          : "Image"
+                      }
                       width={92}
                       height={82}
                       className="w-auto h-[82px] rounded-[6px]"
