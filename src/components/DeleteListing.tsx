@@ -6,8 +6,6 @@ import axios from "axios";
 const DeleteListing = ({ isOpen, onClose, id }: DeleteListingProps) => {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}real-estates/${id}`;
 
-  if (!isOpen) return null;
-
   // Function to handle the deletion
   const handleDelete = async () => {
     try {
@@ -22,6 +20,7 @@ const DeleteListing = ({ isOpen, onClose, id }: DeleteListingProps) => {
       console.error("Error deleting listing:", error);
     }
   };
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 flex justify-center items-center z-50">

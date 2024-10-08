@@ -11,10 +11,10 @@ export interface AddAgentProps {
   onClose: () => void;
 }
 
-export interface AddAgentProps {
+export interface DeleteListingProps {
   isOpen: boolean;
   onClose: () => void;
-  id: string;
+  id: string | number;
 }
 
 export type AgentInfo = yup.InferType<typeof agentSchema>;
