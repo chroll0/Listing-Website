@@ -83,8 +83,8 @@ const AddListing = () => {
     const formData = new FormData();
 
     // Append fields to FormData
-    if (data.image) {
-      formData.append("image", String(data.image));
+    if (data.image instanceof File || data.image instanceof Blob) {
+      formData.append("image", data.image);
     } else {
       console.error("image is missing.");
       return;

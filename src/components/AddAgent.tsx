@@ -75,8 +75,8 @@ const AddAgent: React.FC<AddAgentProps> = ({ isOpen, onClose }) => {
     formData.append("email", String(data.email));
     formData.append("phone", String(data.number));
 
-    if (data.image) {
-      formData.append("avatar", String(data.image));
+    if (data.image instanceof File || data.image instanceof Blob) {
+      formData.append("avatar", data.image);
     } else {
       console.error("Avatar is missing.");
       return;
