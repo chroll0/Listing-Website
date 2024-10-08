@@ -1,3 +1,6 @@
+import { listingSchema } from "@/components/validations";
+import * as yup from "yup";
+
 export type Agent = {
   firstName: string;
   lastName: string;
@@ -7,18 +10,32 @@ export type Agent = {
 };
 
 export type Listing = {
-  id: string;
-  imgURL: string;
+  id: number;
+  image: string;
   price: number;
-  region: string;
+  city: {
+    id: number;
+    name: string;
+    region_id: number;
+    region: {
+      id: number;
+      name: string;
+    };
+  };
   address: string;
+  bedrooms: number;
   area: number;
-  bed: number;
-  type: string;
-  postIndex: number;
+  zip_code: string;
+  is_rental: number;
   description: string;
   date: string;
-  agent: Agent;
+  agent: {
+    name: string;
+    surname: string;
+    avatar: string;
+    email: string;
+    phone: string;
+  };
 };
 export interface ListingCardProps {
   data: Listing;
@@ -39,15 +56,14 @@ export type listingProps = (
   value: string
 ) => void;
 
-export interface ListingInfo {
-  listingType?: string;
-  address?: string;
-  postIndex?: string;
-  region?: string;
-  city?: string;
-  price?: string;
-  area?: string;
-  description?: string;
-  image?: string;
-  agent?: string;
+export type ListingInfo = yup.InferType<typeof listingSchema>;
+
+export interface City {
+  id: number;
+  name: string;
+  region_id: number;
+}
+export interface Region {
+  id: number;
+  name: string;
 }

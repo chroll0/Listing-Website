@@ -1,30 +1,12 @@
 import { ListingCardProps } from "@/types/listing";
-import axios from "axios";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
 
 const ListingCard = ({ data }: ListingCardProps) => {
-  const [cities, setCities] = useState([]);
-
-  useEffect(() => {
-    // Fetch cities from the API
-    const fetchCities = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}cities`
-        );
-        setCities(response.data);
-      } catch (error) {
-        console.error("Error fetching cities:", error);
-      }
-    };
-
-    fetchCities();
-  }, []);
-
-  const city = cities.find((city) => city.id === data.city_id);
   return (
-    <div className="relative rounded-[15px] max-w-[384px] customBorder">
+    <div
+      className="relative rounded-[15px] max-w-[384px] customBorder"
+      key={data.id}
+    >
       <Image src={data.image} alt={data.image} width={384} height={307} />
       <div className="flex flex-col px-[22px] py-[25px] gap-[9px]">
         <span className="text-[28px] font-bold text-black leading-[33.6px]">
@@ -34,7 +16,7 @@ const ListingCard = ({ data }: ListingCardProps) => {
         <div className="flex items-center ">
           <Image src="/icons/location.png" alt="image" width={20} height={20} />
           <span className="ml-1 text-[16px] font-normal text-text-gray">
-            {city ? city.name : "Unknown City"}, {data.address}
+            {data.city.name}, {data.address}
           </span>
         </div>
 

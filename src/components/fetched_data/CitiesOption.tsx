@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
+import { City } from "@/types/listing";
 
-interface City {
-  id: number;
-  name: string;
+interface CityOptionProps {
+  citiesData: City[];
+  setCitiesData: (data: City[]) => void;
+  selectedRegionId: number | null;
 }
 
-const CitiesOption: React.FC = () => {
-  const [citiesData, setCitiesData] = useState<City[]>([]);
+const CitiesOption: React.FC<CityOptionProps> = ({
+  citiesData,
+  setCitiesData,
+  selectedRegionId,
+}) => {
   const API_TOKEN = process.env.NEXT_PUBLIC_API_TOKEN;
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}cities`;
 
@@ -25,6 +30,7 @@ const CitiesOption: React.FC = () => {
           },
         });
         setCitiesData(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -33,10 +39,14 @@ const CitiesOption: React.FC = () => {
     fetchData();
   }, [API_URL, API_TOKEN]);
 
+  const filteredCities = citiesData.filter(
+    (city) => Number(city.region_id) === Number(selectedRegionId)
+  );
+
   return (
     <>
-      {citiesData.map((city) => (
-        <option key={city.id} value={city.name}>
+      {filteredCities.map((city) => (
+        <option key={city.id} value={city.id}>
           {city.name}
         </option>
       ))}

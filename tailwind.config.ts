@@ -18,7 +18,11 @@ const config: Config = {
           slate: "#808A93",
           darkGray: "#021526CC",
         },
-        background: { darkGray: "#02152680", gray: "#02152657" },
+        background: {
+          darkGray: "#02152680",
+          gray: "#02152657",
+          lightGray: "#DBDBDB",
+        },
         button: { gray: "#676E76", tomato: "#F93B1D", green: "#45A849" },
       },
     },

@@ -1,28 +1,34 @@
 "use client";
 
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { listingSchema } from "@/components/validations";
-import Button from "@/components/Button";
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
-import { ListingInfo, listingProps } from "@/types/listing";
-import { IoIosCheckmark } from "react-icons/io";
 import Image from "next/image";
+import axios from "axios";
+import { IoIosCheckmark } from "react-icons/io";
+
+import Button from "@/components/Button";
+import { City, ListingInfo, listingProps, Region } from "@/types/listing";
+import { listingSchema } from "@/components/validations";
 import RegionsOption from "@/components/fetched_data/RegionsOption";
 import CitiesOption from "@/components/fetched_data/CitiesOption";
 import AgentOption from "@/components/fetched_data/AgentOption";
-import axios from "axios";
 
 const AddListing = () => {
+  const [regionsData, setRegionsData] = useState<Region[]>([]);
+  const [citiesData, setCitiesData] = useState<City[]>([]);
+  const [selectedRegionId, setSelectedRegionId] = useState<number | null>(null);
+
   const [listInfo, setListInfo] = useState<ListingInfo>({
-    listingType: "",
+    listingType: 0,
     address: "",
-    postIndex: "",
+    postIndex: 0,
     region: "",
     city: "",
-    price: "",
-    area: "",
+    price: 0,
+    area: 0,
+    bed: 0,
     description: "",
     image: "",
     agent: "",
@@ -73,28 +79,26 @@ const AddListing = () => {
   };
 
   const onSubmit = async (data: ListingInfo) => {
+    console.log(data);
     const formData = new FormData();
 
     // Append fields to FormData
-    formData.append("address", data.address);
-
-    // Image handling
     if (data.image) {
-      formData.append("image", data.image);
+      formData.append("image", String(data.image));
     } else {
       console.error("image is missing.");
-      return; // Exit if the image is missing
+      return;
     }
-
-    formData.append("region_id", String(1));
-    formData.append("description", data.description);
-    formData.append("zip_code", data.postIndex);
+    formData.append("address", String(data.address));
+    formData.append("region_id", String(data.region));
+    formData.append("description", String(data.description));
+    formData.append("zip_code", String(data.postIndex));
     formData.append("price", String(data.price));
     formData.append("area", String(data.area));
-    formData.append("is_rental", String(data.is_rental ? 1 : 0));
+    formData.append("is_rental", String(data.listingType ? 1 : 0));
     formData.append("agent_id", String(1305));
     formData.append("bedrooms", String(2));
-    formData.append("city_id", String(1));
+    formData.append("city_id", String(data.city));
 
     try {
       const response = await axios.post(`${API_URL}real-estates`, formData, {
@@ -105,12 +109,12 @@ const AddListing = () => {
       });
 
       console.log("Listing added successfully:", response.data);
-      router.push("/"); // Redirect after submission
+      router.push("/");
     } catch (error) {
       console.error("Error adding listing:", error);
-      if (error.response) {
-        console.error("API Error Response:", error.response.data); // Show detailed API error response
-      }
+      // if (error.response) {
+      //   console.error("API Error Response:", error.response.data);
+      // }
     }
   };
 
@@ -124,13 +128,24 @@ const AddListing = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-12 2xl:w-[790px]"
       >
+        {/* listing Type */}
         <div className="flex flex-col gap-1">
-          <h2 className="text-[16px] font-medium">ᲒᲐᲠᲘᲒᲔᲑᲘᲡ ᲢᲘᲞᲘ</h2>
+          <div className="flex gap-8 items-center">
+            <h2 className="text-[16px] font-medium">ᲒᲐᲠᲘᲒᲔᲑᲘᲡ ᲢᲘᲞᲘ</h2>
+            {errors.listingType && (
+              <div className="flex text-button-tomato">
+                <IoIosCheckmark className="text-[22px]" />
+                <span className="text-[14px]">
+                  {errors.listingType.message}
+                </span>
+              </div>
+            )}
+          </div>
           <div className="flex gap-20">
             <label>
               <input
                 type="radio"
-                value="იყიდება"
+                value={1}
                 className="mr-2"
                 {...register("listingType")}
               />
@@ -139,20 +154,15 @@ const AddListing = () => {
             <label>
               <input
                 type="radio"
-                value="ქირავდება"
+                value={0}
                 className="mr-2"
                 {...register("listingType")}
               />
               ქირავდება
             </label>
           </div>
-          {errors.listingType && (
-            <div className="flex justify-start items-center text-button-tomato">
-              <IoIosCheckmark />
-              <span className="text-[14px]">{errors.listingType.message}</span>
-            </div>
-          )}
         </div>
+
         <div className="flex flex-col gap-4">
           <h2 className="text-[16px] font-medium">ᲛᲓᲔᲑᲐᲠᲔᲝᲑᲐ</h2>
           <div className="flex justify-between gap-8">
@@ -175,21 +185,22 @@ const AddListing = () => {
               />
               {errors.address ? (
                 <div className="flex justify-start items-center text-button-tomato">
-                  <IoIosCheckmark />
+                  <IoIosCheckmark className="text-[22px]" />
                   <span className="text-[14px]">{errors.address.message}</span>
                 </div>
               ) : watch("address") ? (
                 <div className="flex justify-start items-center text-button-green">
-                  <IoIosCheckmark />
+                  <IoIosCheckmark className="text-[22px]" />
                   <span className="text-[14px]">მინიმუმ ორი სიმბოლო</span>
                 </div>
               ) : (
                 <div className="flex justify-start items-center text-text-black">
-                  <IoIosCheckmark />
+                  <IoIosCheckmark className="text-[22px]" />
                   <span className="text-[14px]">მინიმუმ ორი სიმბოლო </span>
                 </div>
               )}
             </div>
+
             {/* postIndex */}
             <div className="flex-1">
               <label className="text-[14px] font-medium">
@@ -211,19 +222,19 @@ const AddListing = () => {
               />
               {errors.postIndex ? (
                 <div className="flex justify-start items-center text-button-tomato">
-                  <IoIosCheckmark />
+                  <IoIosCheckmark className="text-[22px]" />
                   <span className="text-[14px]">
                     {errors.postIndex.message}
                   </span>
                 </div>
               ) : watch("postIndex") ? (
                 <div className="flex justify-start items-center text-button-green">
-                  <IoIosCheckmark />
+                  <IoIosCheckmark className="text-[22px]" />
                   <span className="text-[14px]">მხოლოდ რიცხვები</span>
                 </div>
               ) : (
                 <div className="flex justify-start items-center text-text-black">
-                  <IoIosCheckmark />
+                  <IoIosCheckmark className="text-[22px]" />
                   <span className="text-[14px]">მხოლოდ რიცხვები</span>
                 </div>
               )}
@@ -236,7 +247,11 @@ const AddListing = () => {
               <label className="text-[14px] font-medium">რეგიონი*</label>
               <select
                 {...register("region", {
-                  onChange: (e) => handleChange("region", e.target.value),
+                  onChange: (e) => {
+                    const value = e.target.value;
+                    handleChange("region", value);
+                    setSelectedRegionId(value);
+                  },
                 })}
                 className={`w-full p-2 border border-text-slate rounded text-[16px] ${
                   errors.region
@@ -247,20 +262,29 @@ const AddListing = () => {
                 }`}
               >
                 <option value="" className="bg-slate-100"></option>
-                <RegionsOption />
+                <RegionsOption
+                  regionsData={regionsData}
+                  setRegionsData={setRegionsData}
+                />
               </select>
               {errors.region ? (
                 <div className="flex justify-start items-center text-button-tomato">
-                  <IoIosCheckmark />
+                  <IoIosCheckmark className="text-[22px]" />
                   <span className="text-[14px]">{errors.region.message}</span>
+                </div>
+              ) : watch("region") ? (
+                <div className="flex justify-start items-center text-button-green">
+                  <IoIosCheckmark className="text-[22px]" />
+                  <span className="text-[14px]">სავალდებულოა</span>
                 </div>
               ) : (
                 <div className="flex justify-start items-center text-text-black">
-                  <IoIosCheckmark />
+                  <IoIosCheckmark className="text-[22px]" />
                   <span className="text-[14px]">სავალდებულოა</span>
                 </div>
               )}
             </div>
+
             {/* city */}
             <div className="flex-1">
               <label className="text-[14px] font-medium">ქალაქი*</label>
@@ -277,22 +301,32 @@ const AddListing = () => {
                 }`}
               >
                 <option className="bg-slate-100" value=""></option>
-                <CitiesOption />
+                <CitiesOption
+                  citiesData={citiesData}
+                  setCitiesData={setCitiesData}
+                  selectedRegionId={selectedRegionId}
+                />
               </select>
               {errors.city ? (
                 <div className="flex justify-start items-center text-button-tomato">
-                  <IoIosCheckmark />
+                  <IoIosCheckmark className="text-[22px]" />
                   <span className="text-[14px]">{errors.city.message}</span>
+                </div>
+              ) : watch("city") ? (
+                <div className="flex justify-start items-center text-button-green">
+                  <IoIosCheckmark className="text-[22px]" />
+                  <span className="text-[14px]">სავალდებულოა</span>
                 </div>
               ) : (
                 <div className="flex justify-start items-center text-text-black">
-                  <IoIosCheckmark />
+                  <IoIosCheckmark className="text-[22px]" />
                   <span className="text-[14px]">სავალდებულოა</span>
                 </div>
               )}
             </div>
           </div>
         </div>
+
         <div className="flex flex-col gap-4">
           <h2 className="text-[16px] font-medium">ᲑᲘᲜᲘᲡ ᲓᲔᲢᲐᲚᲔᲑᲘ</h2>
           <div className="flex justify-between gap-8">
@@ -315,21 +349,22 @@ const AddListing = () => {
               />
               {errors.price ? (
                 <div className="flex justify-start items-center text-button-tomato">
-                  <IoIosCheckmark />
+                  <IoIosCheckmark className="text-[22px]" />
                   <span className="text-[14px]">{errors.price.message}</span>
                 </div>
               ) : watch("price") ? (
                 <div className="flex justify-start items-center text-button-green">
-                  <IoIosCheckmark />
+                  <IoIosCheckmark className="text-[22px]" />
                   <span className="text-[14px]">მხოლოდ რიცხვები</span>
                 </div>
               ) : (
                 <div className="flex justify-start items-center text-text-black">
-                  <IoIosCheckmark />
+                  <IoIosCheckmark className="text-[22px]" />
                   <span className="text-[14px]">მხოლოდ რიცხვები</span>
                 </div>
               )}
             </div>
+
             {/* area */}
             <div className="flex-1">
               <label className="text-[14px] font-medium">ფართობი*</label>
@@ -349,17 +384,17 @@ const AddListing = () => {
               />
               {errors.area ? (
                 <div className="flex justify-start items-center text-button-tomato">
-                  <IoIosCheckmark />
+                  <IoIosCheckmark className="text-[22px]" />
                   <span className="text-[14px]">{errors.area.message}</span>
                 </div>
               ) : watch("area") ? (
                 <div className="flex justify-start items-center text-button-green">
-                  <IoIosCheckmark />
+                  <IoIosCheckmark className="text-[22px]" />
                   <span className="text-[14px]">მხოლოდ რიცხვები</span>
                 </div>
               ) : (
                 <div className="flex justify-start items-center text-text-black">
-                  <IoIosCheckmark />
+                  <IoIosCheckmark className="text-[22px]" />
                   <span className="text-[14px]">მხოლოდ რიცხვები</span>
                 </div>
               )}
@@ -388,22 +423,23 @@ const AddListing = () => {
               />
               {errors.bed ? (
                 <div className="flex justify-start items-center text-button-tomato">
-                  <IoIosCheckmark />
+                  <IoIosCheckmark className="text-[22px]" />
                   <span className="text-[14px]">{errors.bed.message}</span>
                 </div>
               ) : watch("bed") ? (
                 <div className="flex justify-start items-center text-button-green">
-                  <IoIosCheckmark />
+                  <IoIosCheckmark className="text-[22px]" />
                   <span className="text-[14px]">მხოლოდ რიცხვები</span>
                 </div>
               ) : (
                 <div className="flex justify-start items-center text-text-black">
-                  <IoIosCheckmark />
+                  <IoIosCheckmark className="text-[22px]" />
                   <span className="text-[14px]">მხოლოდ რიცხვები</span>
                 </div>
               )}
             </div>
           </div>
+
           {/* description */}
           <div className="flex flex-col mt-4">
             <label className="text-[14px] font-medium">აღწერა*</label>
@@ -422,23 +458,24 @@ const AddListing = () => {
             />
             {errors.description ? (
               <div className="flex justify-start items-center text-button-tomato">
-                <IoIosCheckmark />
+                <IoIosCheckmark className="text-[22px]" />
                 <span className="text-[14px]">
                   {errors.description.message}
                 </span>
               </div>
             ) : watch("description") ? (
               <div className="flex justify-start items-center text-button-green">
-                <IoIosCheckmark />
+                <IoIosCheckmark className="text-[22px]" />
                 <span className="text-[14px]">მინიმუმ ხუთი სიტყვა</span>
               </div>
             ) : (
               <div className="flex justify-start items-center text-text-black">
-                <IoIosCheckmark />
+                <IoIosCheckmark className="text-[22px]" />
                 <span className="text-[14px]">მინიმუმ ხუთი სიტყვა</span>
               </div>
             )}
           </div>
+
           {/* image */}
           <div className="flex flex-col gap-1 w-full mt-4">
             <label className="text-[14px] font-medium">ატვირთეთ ფოტო*</label>
@@ -463,8 +500,16 @@ const AddListing = () => {
               ) : (
                 <div className="relative">
                   <Image
-                    src={listInfo.image}
-                    alt={listInfo.image}
+                    src={
+                      typeof listInfo.image === "string"
+                        ? listInfo.image
+                        : "Image"
+                    }
+                    alt={
+                      typeof listInfo.image === "string"
+                        ? listInfo.image
+                        : "Image"
+                    }
                     width={92}
                     height={82}
                     className="w-auto h-[82px] rounded-[6px]"
@@ -501,9 +546,10 @@ const AddListing = () => {
             )}
           </div>
         </div>
+
+        {/* agent */}
         <div className="flex flex-col gap-4">
           <h2 className="text-[16px] font-medium">ᲐᲒᲔᲜᲢᲘ</h2>
-          {/* agent */}
           <div className="grid grid-cols-2 gap-8">
             <div className="flex-1">
               <label className="text-[14px] font-medium">აირჩიე</label>
@@ -525,18 +571,24 @@ const AddListing = () => {
               </select>
               {errors.agent ? (
                 <div className="flex justify-start items-center text-button-tomato">
-                  <IoIosCheckmark />
+                  <IoIosCheckmark className="text-[22px]" />
                   <span className="text-[14px]">{errors.agent.message}</span>
+                </div>
+              ) : watch("agent") ? (
+                <div className="flex justify-start items-center text-button-green">
+                  <IoIosCheckmark className="text-[22px]" />
+                  <span className="text-[14px]">სავალდებულოა</span>
                 </div>
               ) : (
                 <div className="flex justify-start items-center text-text-black">
-                  <IoIosCheckmark />
+                  <IoIosCheckmark className="text-[22px]" />
                   <span className="text-[14px]">სავალდებულოა</span>
                 </div>
               )}
             </div>
           </div>
         </div>
+
         <div className="flex w-full justify-end gap-4">
           <Button
             type="button"

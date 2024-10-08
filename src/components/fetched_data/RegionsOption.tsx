@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
+import { Region } from "@/types/listing";
 
-interface Region {
-  id: number;
-  name: string;
+interface RegionsOptionProps {
+  regionsData: Region[];
+  setRegionsData: (data: Region[]) => void;
 }
-const RegionsOption = () => {
-  const [regionsData, setRegionsData] = useState<Region[]>([]);
+
+const RegionsOption: React.FC<RegionsOptionProps> = ({
+  regionsData,
+  setRegionsData,
+}) => {
   const API_TOKEN = process.env.NEXT_PUBLIC_API_TOKEN;
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}regions`;
 
@@ -24,6 +28,7 @@ const RegionsOption = () => {
           },
         });
         setRegionsData(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -35,7 +40,7 @@ const RegionsOption = () => {
   return (
     <>
       {regionsData.map((region) => (
-        <option key={region.id} value={region.name}>
+        <option key={region.id} value={region.id}>
           {region.name}
         </option>
       ))}

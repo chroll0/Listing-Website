@@ -11,25 +11,21 @@ export const agentSchema = yup.object().shape({
 });
 
 export const listingSchema = yup.object().shape({
-  listingType: yup.string().required("აირჩიეთ ტიპი"),
+  listingType: yup.number().required("აირჩიეთ ტიპი"),
   address: yup.string().min(2, "მინიმუმ ორი სიმბოლო"),
   postIndex: yup
-    .string()
-    .matches(/^\d+$/, "მხოლოდ რიცხვები")
+    .number()
+    .typeError("მხოლოდ რიცხვები")
+    .integer("მხოლოდ მთელი რიცხვები")
     .required("მხოლოდ რიცხვები"),
   region: yup.string().required("სავალდებულოა"),
   city: yup.string().required("სავალდებულოა"),
-  price: yup
-    .string()
-    .matches(/^\d+$/, "მხოლოდ რიცხვები")
-    .required("მხოლოდ რიცხვები"),
-  area: yup
-    .string()
-    .matches(/^\d+$/, "მხოლოდ რიცხვები")
-    .required("მხოლოდ რიცხვები"),
+  price: yup.number().typeError("მხოლოდ რიცხვები").required("მხოლოდ რიცხვები"),
+  area: yup.number().typeError("მხოლოდ რიცხვები").required("მხოლოდ რიცხვები"),
   bed: yup
-    .string()
-    .matches(/^\d+$/, "მხოლოდ რიცხვები")
+    .number()
+    .typeError("მხოლოდ რიცხვები")
+    .integer("მხოლოდ მთელი რიცხვები")
     .required("მხოლოდ რიცხვები"),
   description: yup
     .string()
