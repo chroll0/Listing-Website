@@ -9,6 +9,11 @@ export type handleChangeProps = (
 export interface AddAgentProps {
   isOpen: boolean;
   onClose: () => void;
+}
+
+export interface AddAgentProps {
+  isOpen: boolean;
+  onClose: () => void;
   id: string;
 }
 

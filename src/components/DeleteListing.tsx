@@ -1,9 +1,9 @@
-import { AddAgentProps } from "@/types/agent";
+import { DeleteListingProps } from "@/types/agent";
 import Button from "./Button";
 import Image from "next/image";
 import axios from "axios";
 
-const DeleteListing = ({ isOpen, onClose, id }: AddAgentProps) => {
+const DeleteListing = ({ isOpen, onClose, id }: DeleteListingProps) => {
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}real-estates/${id}`;
 
   if (!isOpen) return null;
