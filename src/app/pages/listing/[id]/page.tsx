@@ -159,7 +159,7 @@ const ListingPage = ({ params }: { params: { id: string } }) => {
         </div>
       </div>
 
-      <DeleteListing isOpen={isOpen} onClose={toggleModal} />
+      <DeleteListing isOpen={isOpen} onClose={toggleModal} id={params.id} />
     </div>
   );
 };

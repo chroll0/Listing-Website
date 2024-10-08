@@ -16,7 +16,6 @@ export const listingSchema = yup.object().shape({
   postIndex: yup
     .number()
     .typeError("მხოლოდ რიცხვები")
-    .integer("მხოლოდ მთელი რიცხვები")
     .required("მხოლოდ რიცხვები"),
   region: yup.string().required("სავალდებულოა"),
   city: yup.string().required("სავალდებულოა"),

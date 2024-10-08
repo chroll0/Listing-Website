@@ -9,6 +9,7 @@ export type handleChangeProps = (
 export interface AddAgentProps {
   isOpen: boolean;
   onClose: () => void;
+  id: string;
 }
 
 export type AgentInfo = yup.InferType<typeof agentSchema>;

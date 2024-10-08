@@ -1,11 +1,11 @@
 "use client";
 
+import axios from "axios";
+import Image from "next/image";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
-import axios from "axios";
 import { IoIosCheckmark } from "react-icons/io";
 
 import Button from "@/components/Button";
@@ -96,8 +96,8 @@ const AddListing = () => {
     formData.append("price", String(data.price));
     formData.append("area", String(data.area));
     formData.append("is_rental", String(data.listingType ? 1 : 0));
-    formData.append("agent_id", String(1305));
-    formData.append("bedrooms", String(2));
+    formData.append("agent_id", String(data.agent));
+    formData.append("bedrooms", String(data.bed));
     formData.append("city_id", String(data.city));
 
     try {

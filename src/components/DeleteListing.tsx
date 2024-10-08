@@ -1,9 +1,27 @@
 import { AddAgentProps } from "@/types/agent";
 import Button from "./Button";
 import Image from "next/image";
+import axios from "axios";
 
-const DeleteListing = ({ isOpen, onClose }: AddAgentProps) => {
+const DeleteListing = ({ isOpen, onClose, id }: AddAgentProps) => {
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}real-estates/${id}`;
+
   if (!isOpen) return null;
+
+  // Function to handle the deletion
+  const handleDelete = async () => {
+    try {
+      const response = await axios.delete(API_URL, {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
+        },
+      });
+      console.log("Delete response:", response.data);
+      onClose();
+    } catch (error) {
+      console.error("Error deleting listing:", error);
+    }
+  };
 
   return (
     <div className="fixed inset-0 flex justify-center items-center z-50">
@@ -28,7 +46,7 @@ const DeleteListing = ({ isOpen, onClose }: AddAgentProps) => {
             title="დადასტურება"
             variant="text-[16px] font-medium leading-[19.2px] rounded-[10px] py-[14px] px-[18px] bg-button-tomato text-white"
             link="/"
-            // action={handleSubmit(onSubmit)}
+            action={handleDelete}
           />
         </div>
         <div

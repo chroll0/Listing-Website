@@ -37,7 +37,7 @@ const AgentOption: React.FC = () => {
   return (
     <>
       {agentData.map((agent) => (
-        <option key={agent.id} value={agent.name}>
+        <option key={agent.id} value={agent.id}>
           {agent.name} {agent.surname}
         </option>
       ))}
