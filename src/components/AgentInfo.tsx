@@ -10,7 +10,7 @@ const AgentInfo = ({ agent }: { agent: Listing["agent"] }) => {
 
   return (
     <div className="flex flex-col gap-2 border rounded-[8px] border-background-lightGray px-4 py-6">
-      <div className="flex gap-4">
+      <div className="flex gap-4 items-center">
         <Image
           src={agent.avatar}
           alt={agent.avatar}
@@ -25,11 +25,13 @@ const AgentInfo = ({ agent }: { agent: Listing["agent"] }) => {
           <span className="text-button-gray text-[14px]">აგენტი</span>
         </div>
       </div>
-      <div className="flex flex-col text-button-gray">
-        <div>
+      <div className="flex flex-col text-button-gray gap-1">
+        <div className="flex items-center gap-3">
+          <Image src="/icons/email.png" alt="email" width={20} height={20} />
           <span>{agent.email}</span>
         </div>
-        <div>
+        <div className="flex items-center gap-3">
+          <Image src="/icons/phone.png" alt="phone" width={20} height={20} />
           <span>{formatPhoneNumber(agent.phone)}</span>
         </div>
       </div>

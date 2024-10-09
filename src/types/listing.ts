@@ -28,7 +28,7 @@ export type Listing = {
   zip_code: string;
   is_rental: number;
   description: string;
-  date: string;
+  created_at: string;
   agent: {
     name: string;
     surname: string;

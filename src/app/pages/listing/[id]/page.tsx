@@ -9,6 +9,7 @@ import AgentInfo from "@/components/AgentInfo";
 import Button from "@/components/Button";
 import DeleteListing from "@/components/DeleteListing";
 import { Listing } from "@/types/listing";
+import moment from "moment";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const API_TOKEN = process.env.NEXT_PUBLIC_API_TOKEN;
@@ -68,7 +69,7 @@ const ListingPage = ({ params }: { params: { id: string } }) => {
     bedrooms,
     zip_code,
     description,
-    date,
+    created_at,
     agent,
   } = item;
 
@@ -88,7 +89,7 @@ const ListingPage = ({ params }: { params: { id: string } }) => {
             className="rounded-t-[14px]"
           />
           <span className="text-[16px] font-normal text-text-slate">
-            გამოქვეყნების თარიღი {date}
+            გამოქვეყნების თარიღი {moment(created_at).format("DD/MM/YY")}
           </span>
         </div>
 
