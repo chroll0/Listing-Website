@@ -3,13 +3,13 @@
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import moment from "moment";
 import { useEffect, useState } from "react";
 
 import AgentInfo from "@/components/AgentInfo";
 import Button from "@/components/Button";
 import DeleteListing from "@/components/DeleteListing";
 import { Listing } from "@/types/listing";
-import moment from "moment";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const API_TOKEN = process.env.NEXT_PUBLIC_API_TOKEN;
@@ -46,17 +46,26 @@ const ListingPage = ({ params }: { params: { id: string } }) => {
     setIsOpen(!isOpen);
   };
 
-  if (loading) {
-    return <span className="text-[20px] font-medium">Loading...</span>;
-  }
-
-  if (error) {
-    return <span className="text-red-500">{error}</span>;
+  if (loading || error) {
+    return (
+      <div className="paddingX paddingY">
+        {loading ? (
+          <span className="text-[20px] font-medium">Loading...</span>
+        ) : (
+          <span className="text-red-500">{error}</span>
+        )}
+      </div>
+    );
   }
 
   if (!item) {
-    return <div>Item not found</div>;
+    return (
+      <div className="paddingX paddingY">
+        <span className="text-[20px] font-medium">Item not found</span>
+      </div>
+    );
   }
+  // console.log(item);
 
   const {
     image,

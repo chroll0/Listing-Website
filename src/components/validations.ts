@@ -14,8 +14,8 @@ export const listingSchema = yup.object().shape({
   listingType: yup.number().required("აირჩიეთ ტიპი"),
   address: yup.string().min(2, "მინიმუმ ორი სიმბოლო"),
   postIndex: yup
-    .number()
-    .typeError("მხოლოდ რიცხვები")
+    .string()
+    .matches(/^\d+$/, "მხოლოდ რიცხვები")
     .required("მხოლოდ რიცხვები"),
   region: yup.string().required("სავალდებულოა"),
   city: yup.string().required("სავალდებულოა"),

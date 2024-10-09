@@ -23,7 +23,7 @@ const AddListing = () => {
   const [listInfo, setListInfo] = useState<ListingInfo>({
     listingType: 0,
     address: "",
-    postIndex: 0,
+    postIndex: "",
     region: "",
     city: "",
     price: 0,
@@ -207,7 +207,7 @@ const AddListing = () => {
                 საფოსტო ინდექსი*
               </label>
               <input
-                type="number"
+                type="text"
                 id="postIndex"
                 {...register("postIndex", {
                   onChange: (e) => handleChange("postIndex", e.target.value),
