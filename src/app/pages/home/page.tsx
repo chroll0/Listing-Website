@@ -14,6 +14,13 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const [filter, setFilters] = useState({
+    region: null,
+    price: { min: 0, max: null },
+    area: { min: 0, max: null },
+    bedrooms: 0,
+  });
+
   useEffect(() => {
     const fetchData = async () => {
       try {
