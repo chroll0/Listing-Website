@@ -10,24 +10,7 @@ import RegionFilter from "./filters/RegionFilter";
 import PriceFilter from "./filters/PriceFilter";
 import AreaFilter from "./filters/AreaFilter";
 import BedroomsFilter from "./filters/BedroomsFilter";
-
-interface Filters {
-  region: number | null;
-  price: {
-    min: number | null;
-    max: number | null;
-  };
-  area: {
-    min: number | null;
-    max: number | null;
-  };
-  bedrooms: number;
-}
-
-interface SearchProps {
-  filters: Filters;
-  setFilters: React.Dispatch<React.SetStateAction<Filters>>;
-}
+import { SearchProps } from "@/types/filters";
 
 // Reusable Filter Dropdown Component
 const FilterDropdown = ({
@@ -52,7 +35,7 @@ const FilterDropdown = ({
   );
 };
 
-const Search = () => {
+const Search: React.FC<SearchProps> = ({ filters, setFilters }) => {
   const [regionsData, setRegionsData] = useState<Region[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState({
@@ -89,6 +72,22 @@ const Search = () => {
       [filter]: !prevState[filter], // Toggle the clicked filter
     }));
   };
+  type FilterType = "region" | "bedrooms" | "all";
+  const handleClearFilter = (filter: FilterType) => {
+    if (filter === "all") {
+      setFilters({
+        region: null,
+        bedrooms: null,
+        price: { min: null, max: null },
+        area: { min: null, max: null },
+      });
+    } else {
+      setFilters({
+        ...filters,
+        [filter]: null,
+      });
+    }
+  };
 
   return (
     <div className="flex flex-col gap-6 pb-5">
@@ -119,12 +118,16 @@ const Search = () => {
             <RegionFilter
               regionsData={regionsData}
               setRegionsData={setRegionsData}
+              filters={filters}
+              setFilters={setFilters}
             />
           )}
 
           {isFilterOpen.price && <PriceFilter priceRange={priceRange} />}
           {isFilterOpen.area && <AreaFilter areaRange={areaRange} />}
-          {isFilterOpen.bedrooms && <BedroomsFilter />}
+          {isFilterOpen.bedrooms && (
+            <BedroomsFilter filters={filters} setFilters={setFilters} />
+          )}
         </div>
 
         <div className="flex gap-4">
@@ -146,16 +149,48 @@ const Search = () => {
       </div>
 
       <div className="flex items-center gap-2">
-        <div className="flex gap-1 items-center border px-[11px] py-[3px] rounded-full font-normal cursor-pointer text-[14px] text-text-darkGray">
-          <p>20 000 ₾ </p>-<p> 100 000 ₾</p>
-          <IoMdClose />
-        </div>
+        {filters.region && (
+          <div className="flex gap-1 items-center border px-[11px] py-[3px] rounded-full font-normal cursor-pointer text-[14px] text-text-darkGray">
+            <p>{filters.region}</p>
+            <IoMdClose onClick={() => handleClearFilter("region")} />
+          </div>
+        )}
 
+        {filters.price.min ||
+          (filters.price.max && (
+            <div className="flex gap-1 items-center border px-[11px] py-[3px] rounded-full font-normal cursor-pointer text-[14px] text-text-darkGray">
+              <p>{filters.price.min} ₾</p>
+              <p>-</p>
+              <p>{filters.price.max} ₾</p>
+              <IoMdClose onClick={() => handleClearFilter("region")} />
+            </div>
+          ))}
+
+        {filters.area.min ||
+          (filters.area.max && (
+            <div className="flex gap-1 items-center border px-[11px] py-[3px] rounded-full font-normal cursor-pointer text-[14px] text-text-darkGray">
+              <p>
+                {filters.area.min} მ<sup className="text-[9px] pl-[1px]">2</sup>
+              </p>
+              <p>-</p>
+              <p>
+                {filters.area.max} მ<sup className="text-[9px] pl-[1px]">2</sup>
+              </p>
+              <IoMdClose onClick={() => handleClearFilter("region")} />
+            </div>
+          ))}
+
+        {filters.bedrooms && (
+          <div className="flex gap-1 items-center border px-[11px] py-[3px] rounded-full font-normal cursor-pointer text-[14px] text-text-darkGray">
+            <p>{filters.bedrooms}</p>
+            <IoMdClose onClick={() => handleClearFilter("bedrooms")} />
+          </div>
+        )}
         <Button
           type="button"
           title="გასუფთავება"
           variant="text-[14px] font-semibold leading-[16.8px] text-text-darkGray px-[5px] py-[3px]"
-          // action={clearFilter}
+          action={() => handleClearFilter("all")}
         />
       </div>
 
