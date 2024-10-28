@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import Button from "../Button";
-import { SearchProps } from "@/types/filters";
+import { BedroomsProps } from "@/types/filters";
 
-const BedroomsFilter = ({ filters, setFilters }: SearchProps) => {
+const BedroomsFilter = ({
+  filters,
+  setFilters,
+  toggleFilter,
+}: BedroomsProps) => {
   const [value, setValue] = useState(filters.bedrooms || 0);
   // Handle input change
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -16,6 +20,7 @@ const BedroomsFilter = ({ filters, setFilters }: SearchProps) => {
 
   const handleButtonClick = () => {
     setFilters({ ...filters, bedrooms: value });
+    toggleFilter("bedrooms");
   };
 
   return (

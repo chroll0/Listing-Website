@@ -8,6 +8,7 @@ const RegionFilter: React.FC<RegionsOptionProps> = ({
   setRegionsData,
   filters,
   setFilters,
+  toggleFilter,
 }) => {
   const API_TOKEN = process.env.NEXT_PUBLIC_API_TOKEN;
   const API_URL = `${process.env.NEXT_PUBLIC_API_URL}regions`;
@@ -46,6 +47,7 @@ const RegionFilter: React.FC<RegionsOptionProps> = ({
 
   const handleButtonClick = () => {
     setFilters({ ...filters, region: selectedRegion });
+    toggleFilter("region");
   };
 
   return (

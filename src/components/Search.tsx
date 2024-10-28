@@ -10,7 +10,7 @@ import RegionFilter from "./filters/RegionFilter";
 import PriceFilter from "./filters/PriceFilter";
 import AreaFilter from "./filters/AreaFilter";
 import BedroomsFilter from "./filters/BedroomsFilter";
-import { SearchProps } from "@/types/filters";
+import { IsFilterOpen, SearchProps } from "@/types/filters";
 
 // Reusable Filter Dropdown Component
 const FilterDropdown = ({
@@ -38,28 +38,12 @@ const FilterDropdown = ({
 const Search: React.FC<SearchProps> = ({ filters, setFilters }) => {
   const [regionsData, setRegionsData] = useState<Region[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isFilterOpen, setIsFilterOpen] = useState({
+  const [isFilterOpen, setIsFilterOpen] = useState<IsFilterOpen>({
     region: false,
     price: false,
     area: false,
     bedrooms: false,
   });
-
-  const priceRange = [
-    { min: 0, max: 50000 },
-    { min: 50000, max: 100000 },
-    { min: 100000, max: 150000 },
-    { min: 150000, max: 200000 },
-    { min: 200000, max: 300000 },
-  ];
-
-  const areaRange = [
-    { min: 0, max: 50 },
-    { min: 50, max: 100 },
-    { min: 100, max: 150 },
-    { min: 150, max: 200 },
-    { min: 200, max: 300 },
-  ];
 
   const toggleModal = () => setIsModalOpen((prev) => !prev);
 
@@ -72,7 +56,7 @@ const Search: React.FC<SearchProps> = ({ filters, setFilters }) => {
       [filter]: !prevState[filter], // Toggle the clicked filter
     }));
   };
-  type FilterType = "region" | "bedrooms" | "all";
+  type FilterType = "region" | "bedrooms" | "price" | "area" | "all";
   const handleClearFilter = (filter: FilterType) => {
     if (filter === "all") {
       setFilters({
@@ -120,13 +104,32 @@ const Search: React.FC<SearchProps> = ({ filters, setFilters }) => {
               setRegionsData={setRegionsData}
               filters={filters}
               setFilters={setFilters}
+              toggleFilter={toggleFilter}
             />
           )}
 
-          {isFilterOpen.price && <PriceFilter priceRange={priceRange} />}
-          {isFilterOpen.area && <AreaFilter areaRange={areaRange} />}
+          {isFilterOpen.price && (
+            <PriceFilter
+              filters={filters}
+              setFilters={setFilters}
+              toggleFilter={toggleFilter}
+            />
+          )}
+
+          {isFilterOpen.area && (
+            <AreaFilter
+              filters={filters}
+              setFilters={setFilters}
+              toggleFilter={toggleFilter}
+            />
+          )}
+
           {isFilterOpen.bedrooms && (
-            <BedroomsFilter filters={filters} setFilters={setFilters} />
+            <BedroomsFilter
+              filters={filters}
+              setFilters={setFilters}
+              toggleFilter={toggleFilter}
+            />
           )}
         </div>
 
@@ -152,38 +155,62 @@ const Search: React.FC<SearchProps> = ({ filters, setFilters }) => {
         {filters.region && (
           <div className="flex gap-1 items-center border px-[11px] py-[3px] rounded-full font-normal cursor-pointer text-[14px] text-text-darkGray">
             <p>{filters.region}</p>
-            <IoMdClose onClick={() => handleClearFilter("region")} />
+            <IoMdClose
+              onClick={() => handleClearFilter("region")}
+              className="transition-all hover:rotate-90"
+            />
           </div>
         )}
 
-        {filters.price.min ||
-          (filters.price.max && (
-            <div className="flex gap-1 items-center border px-[11px] py-[3px] rounded-full font-normal cursor-pointer text-[14px] text-text-darkGray">
-              <p>{filters.price.min} ₾</p>
-              <p>-</p>
-              <p>{filters.price.max} ₾</p>
-              <IoMdClose onClick={() => handleClearFilter("region")} />
-            </div>
-          ))}
+        {!(filters.price.min === null && filters.price.max === null) && (
+          <div className="flex gap-1 items-center border px-[11px] py-[3px] rounded-full font-normal cursor-pointer text-[14px] text-text-darkGray">
+            <p>
+              {filters.price.min !== null
+                ? `${filters.price.min.toLocaleString()} ₾`
+                : "0 ₾"}
+            </p>
+            <p>-</p>
+            <p>
+              {filters.price.max !== null
+                ? `${filters.price.max.toLocaleString()} ₾`
+                : "∞"}
+            </p>
+            <IoMdClose
+              onClick={() => handleClearFilter("price")}
+              className="transition-all hover:rotate-90"
+            />
+          </div>
+        )}
 
-        {filters.area.min ||
-          (filters.area.max && (
-            <div className="flex gap-1 items-center border px-[11px] py-[3px] rounded-full font-normal cursor-pointer text-[14px] text-text-darkGray">
-              <p>
-                {filters.area.min} მ<sup className="text-[9px] pl-[1px]">2</sup>
-              </p>
-              <p>-</p>
-              <p>
-                {filters.area.max} მ<sup className="text-[9px] pl-[1px]">2</sup>
-              </p>
-              <IoMdClose onClick={() => handleClearFilter("region")} />
-            </div>
-          ))}
+        {!(filters.area.min === null && filters.area.max === null) && (
+          <div className="flex gap-1 items-center border px-[11px] py-[3px] rounded-full font-normal cursor-pointer text-[14px] text-text-darkGray">
+            <p>
+              {filters.area.min !== null
+                ? `${filters.area.min.toLocaleString()}`
+                : "0"}{" "}
+              მ<sup className="text-[9px] pl-[1px]">2</sup>
+            </p>
+            <p>-</p>
+            <p>
+              {filters.area.max !== null
+                ? `${filters.area.max.toLocaleString()}`
+                : "∞"}{" "}
+              მ<sup className="text-[9px] pl-[1px]">2</sup>
+            </p>
+            <IoMdClose
+              onClick={() => handleClearFilter("area")}
+              className="transition-all hover:rotate-90"
+            />
+          </div>
+        )}
 
         {filters.bedrooms && (
           <div className="flex gap-1 items-center border px-[11px] py-[3px] rounded-full font-normal cursor-pointer text-[14px] text-text-darkGray">
             <p>{filters.bedrooms}</p>
-            <IoMdClose onClick={() => handleClearFilter("bedrooms")} />
+            <IoMdClose
+              onClick={() => handleClearFilter("bedrooms")}
+              className="transition-all hover:rotate-90"
+            />
           </div>
         )}
         <Button
