@@ -14,7 +14,7 @@ const AreaFilter: React.FC<AreaFilterProps> = ({
     { min: 150, max: 200 },
     { min: 200, max: 300 },
   ];
-  const [selectedArea, setSelectedArea] = useState<{
+  const [selectedArea] = useState<{
     min: number | null;
     max: number | null;
   } | null>(filters.area || null);

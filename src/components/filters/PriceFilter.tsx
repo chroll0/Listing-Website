@@ -15,7 +15,7 @@ const PriceFilter: React.FC<PriceFilterProps> = ({
     { min: 200000, max: 300000 },
   ];
 
-  const [selectedPrice, setSelectedPrice] = useState<{
+  const [selectedPrice] = useState<{
     min: number | null;
     max: number | null;
   } | null>(filters.price || null);
